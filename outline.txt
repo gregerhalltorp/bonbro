@@ -1,0 +1,7 @@
+* server/client? - client should be enough - server only for server-side rendering, mention :)
+* redux kan vara ok.
+* webpack - absolutely
+* har en query för deckare, den blir bra. ladda det datat in i store eller i state på en handler
+* använd https://github.com/mingxinstar/react-hls/blob/master/src/scripts/components/react-hls.jsx 
+*   som utkast för att rendrera spelaren istf att ta in react-hls-komponenten
+* Inte så svårt att göra detta, borde bli ok
