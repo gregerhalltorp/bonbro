@@ -5,3 +5,36 @@
 * använd https://github.com/mingxinstar/react-hls/blob/master/src/scripts/components/react-hls.jsx 
 *   som utkast för att rendrera spelaren istf att ta in react-hls-komponenten
 * Inte så svårt att göra detta, borde bli ok
+
+
+query {
+  program(nid:"law-order-special-victims-unit") {
+    id
+    episodePanels {
+      videoList {
+        videoAssets {
+          id
+        }
+      }
+      
+    }
+  } 
+  
+
+  programSearch(tag:"Deckare") {
+    programs {
+      name
+      nid
+      episodePanels {
+        name
+        videoList {
+          videoAssets {
+            id
+            drmProtected
+            
+          }
+        }
+      }
+    }
+  }
+}
