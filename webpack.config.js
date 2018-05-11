@@ -22,7 +22,7 @@ if (isDevMode) {
 }
 
 module.exports = {
-  entry: './src/index.js',
+  entry: ['babel-polyfill', 'whatwg-fetch', './src/index.js'],
   output: {
     filename: 'bundle.[hash:8].js',
     path: path.resolve(__dirname, 'build'),
@@ -37,7 +37,7 @@ module.exports = {
         exclude: [/node_modules/],
         loader: 'babel-loader',
         options: {
-          presets: ['env', 'react'],
+          presets: ['env', 'react', 'stage-2'],
           plugins: ['react-hot-loader/babel'],
           babelrc: false,
         },
