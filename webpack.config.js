@@ -15,10 +15,7 @@ const plugins = [
 ];
 
 if (isDevMode) {
-  plugins.concat([
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
-  ]);
+  plugins.concat([new webpack.HotModuleReplacementPlugin(), new webpack.NamedModulesPlugin()]);
 }
 
 module.exports = {
@@ -26,9 +23,10 @@ module.exports = {
   output: {
     filename: 'bundle.[hash:8].js',
     path: path.resolve(__dirname, 'build'),
+    publicPath: '/',
   },
   devServer: {
-    contentBase: './build',
+    historyApiFallback: true,
   },
   module: {
     rules: [
