@@ -1,8 +1,4 @@
-# TODOS:
-
-1.  Add redux
-2.  Fetch gql-data and display
-3.  React-router
-4.  Link to video.
-
-## OR SWITCH TO NODE/EXPRESS. For fun!
+## To run on webpack-dev-server (no hosted version at the mo)
+1. Clone
+2. `yarn`
+3. `yarn start`
