@@ -38,3 +38,87 @@ query {
     }
   }
 }
+
+    console.log('alskdfjlaskdfjlaskdfjalsdfj', wrapper.getElement());
+    // expect(
+    //   wrapper.equals(
+    //     <div>
+    //       <h1>TEST_NAME</h1>
+    //       <EpisodePanel name="values" />
+    //       <EpisodePanel name="are" />
+    //       <EpisodePanel name="not" />
+    //       <EpisodePanel name="important" />
+    //     </div>
+    //   )
+    // ).to.be.true;
+    function internalNodeCompare(a, b, lenComp, isLoose) {
+      if (a === b) return true;
+      console.log(1);
+      if (!a || !b) return false;
+      console.log(2, a.type, b.type);
+      if (a.type !== b.type) return false;
+      console.log(3);
+
+      let left = propsOfNode(a);
+      let right = propsOfNode(b);
+      if (isLoose) {
+        left = entries(left).reduce(removeNullaryReducer, {});
+        right = entries(right).reduce(removeNullaryReducer, {});
+      }
+
+      const leftKeys = Object.keys(left);
+      for (let i = 0; i < leftKeys.length; i += 1) {
+        const prop = leftKeys[i];
+        // we will check children later
+        if (prop === 'children') {
+          // continue;
+        } else if (!(prop in right)) {
+          return false;
+        } else if (right[prop] === left[prop]) {
+          // continue;
+        } else if (
+          typeof right[prop] === typeof left[prop] &&
+          typeof left[prop] === 'object'
+        ) {
+          if (!isEqual(left[prop], right[prop])) return false;
+        } else {
+          return false;
+        }
+      }
+
+      const leftHasChildren = 'children' in left;
+      const rightHasChildren = 'children' in right;
+      const childCompare = isLoose ? childrenMatch : childrenEqual;
+      if (leftHasChildren || rightHasChildren) {
+        if (
+          !childCompare(
+            childrenToSimplifiedArray(left.children),
+            childrenToSimplifiedArray(right.children),
+            lenComp
+          )
+        ) {
+          return false;
+        }
+      }
+
+      if (!isTextualNode(a)) {
+        const rightKeys = Object.keys(right);
+        return lenComp(
+          leftKeys.length - leftHasChildren,
+          rightKeys.length - rightHasChildren
+        );
+      }
+
+      return false;
+    }
+    internalNodeCompare(
+      wrapper.getElement(),
+      <div>
+        <h1>TEST_NAME</h1>
+        <EpisodePanel name="values" />
+        <EpisodePanel name="are" />
+        <EpisodePanel name="not" />
+        <EpisodePanel name="important" />
+      </div>
+    );
+    console.log(wrapper.find('EpisodePanel'));

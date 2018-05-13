@@ -26,5 +26,6 @@ export default {
     }
   }`,
   graphQlUrl: 'https://tv4-graphql-prod.herokuapp.com/graphql',
-  assetApiUrl: 'https://prima.tv4play.se/api/web/asset/${assetId}/play.json?protocol=hls3',
+  assetApiUrl:
+    'https://prima.tv4play.se/api/web/asset/${assetId}/play.json?protocol=hls3',
 };

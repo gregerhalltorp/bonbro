@@ -1,12 +1,18 @@
 import React from 'react';
 import EpisodePanel from './EpisodePanel.jsx';
 
-const Program = ({ program }) => {
-  const { name, image, episodePanels } = program;
-  if (!name || !image || !episodePanels) {
+const Program = ({ name, episodePanels, ...rest }) => {
+  if (
+    !name ||
+    !episodePanels ||
+    episodePanels.constructor !== Array ||
+    !episodePanels.length
+  ) {
     return false;
   }
-  const episodeSections = episodePanels.map(ep => <EpisodePanel episodePanel={ep} key={ep.name} />);
+  const episodeSections = episodePanels.map(ep => (
+    <EpisodePanel key={ep.name} {...ep} />
+  ));
   return (
     <div>
       <h1>{name}</h1>
