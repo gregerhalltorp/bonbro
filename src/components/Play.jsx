@@ -1,35 +1,6 @@
 import React from 'react';
 import Hls from 'hls.js';
-
-const valueIn = (target, path) => {
-  if (typeof target === 'undefined' || target === null) {
-    return undefined;
-  }
-
-  const pathArr = path.split('.');
-  if (!pathArr.length) {
-    return target;
-  }
-
-  let ptr = target;
-  while (pathArr.length) {
-    if (ptr === undefined || ptr === null) {
-      return undefined;
-    }
-
-    ptr = ptr[pathArr.shift()];
-  }
-
-  return typeof ptr === 'undefined' || ptr === null ? undefined : ptr;
-};
-
-const jsonFetch = url => {
-  return fetch(url)
-    .then(response => response.json())
-    .catch(err => {
-      throw err;
-    });
-};
+import { valueIn, jsonFetch } from '../utils';
 
 class Play extends React.Component {
   constructor(props) {
@@ -44,7 +15,9 @@ class Play extends React.Component {
 
   async componentDidMount() {
     const assetId = valueIn(this.props, 'match.params.assetId');
-    console.log(assetId, typeof assetId);
+
+    this.hls && this.hls.destroy();
+
     if (!assetId && assetId !== 0) {
       this.setState(() => ({ render: false, message: 'Cannot render video without an ID' }));
       return;
@@ -73,26 +46,27 @@ class Play extends React.Component {
     }
 
     if (manifestUrl && this.video) {
-      console.log('attaching');
+      const video = this.video;
       const hlsPtr = new Hls();
       this.hls = hlsPtr;
-      hlsPtr.attachMedia(this.video);
+      hlsPtr.attachMedia(video);
       hlsPtr.on(Hls.Events.MEDIA_ATTACHED, function() {
-        console.log('mainfestUrl', manifestUrl);
         console.log('video and hls.js are now bound together !');
         hlsPtr.loadSource(manifestUrl);
         hlsPtr.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
           console.log('manifest loaded, found ' + data.levels.length + ' quality level');
+          video.play();
         });
       });
       hlsPtr.on(Hls.Events.ERROR, function(event, data) {
         console.log(event);
+        this.setState(() => ({ render: false, message: 'event' }));
       });
     }
   }
 
-  componentWillMount() {
-    console.log('componentWillUnmont');
+  componentWillUnmount() {
+    this.hls && this.hls.destroy();
   }
 
   render() {
@@ -104,11 +78,11 @@ class Play extends React.Component {
 
     return (
       <div>
-        Rendering player here soon, assetId is {assetId}
         <video
           ref={video => {
             this.video = video;
           }}
+          controls
         />
       </div>
     );

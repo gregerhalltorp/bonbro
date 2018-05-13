@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Asset = ({ asset }) => {
-  console.log('asset', asset);
+const Episode = ({ asset }) => {
   const { episode, description, duration, title, daysLeftInService, id } = asset;
   const seconds = duration % 60;
   const durationMinutes = (duration - seconds) / 60;
@@ -20,4 +19,4 @@ const Asset = ({ asset }) => {
   );
 };
 
-export default Asset;
+export default Episode;

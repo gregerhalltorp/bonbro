@@ -1,8 +1,7 @@
 import React from 'react';
-import { hot } from 'react-hot-loader';
 import Program from './Program.jsx';
-
-// const App = ({ data } = {}) => <div>{data.text}</div>;
+import { jsonFetch } from '../utils';
+import config from '../configuration';
 
 class App extends React.Component {
   constructor(props) {
@@ -11,43 +10,15 @@ class App extends React.Component {
     this.state = {};
   }
   componentDidMount() {
-    const queryBody = `{
-      program(nid:"kommissarien-och-havet") {
-        name
-        image
-        episodePanels {
-          name
-          videoList {
-            videoAssets {
-              id
-              episode
-              description
-              duration
-              daysLeftInService
-              expire_date_time
-              expireDateTime
-              image
-              program {
-                name
-              }
-              season
-              title
-            }
-          }
-        }
-      }
-    }`;
-
-    fetch('https://tv4-graphql-prod.herokuapp.com/graphql', {
+    jsonFetch(config.graphQlUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        query: queryBody,
+        query: config.queryBody,
       }),
     })
-      .then(response => response.json())
       .then(json => {
         this.setState(prevState => ({
           ...prevState,
@@ -64,11 +35,9 @@ class App extends React.Component {
 
   render() {
     const { data } = this.state;
-    console.log('this.state', this.state);
-    const potentialProgram =
-      (data && data.program && <Program program={data.program} />) || '';
+    const potentialProgram = (data && data.program && <Program program={data.program} />) || '';
     return <div>{potentialProgram}</div>;
   }
 }
 
-export default hot(module)(App);
+export default App;

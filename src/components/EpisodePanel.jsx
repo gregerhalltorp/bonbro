@@ -1,14 +1,14 @@
 import React from 'react';
-import Asset from './Asset.jsx';
+import Episode from './Episode.jsx';
 
 const EpisodePanel = ({ episodePanel }) => {
   const { name, videoList } = episodePanel;
   const { videoAssets } = videoList;
-  const assets = videoAssets.map(asset => <Asset key={asset.id} asset={asset} />);
+  const episodes = videoAssets.map(asset => <Episode key={asset.id} asset={asset} />);
   return (
     <div style={{ marginTop: '25px' }}>
       <h2>{name}</h2>
-      {assets}
+      {episodes}
     </div>
   );
 };
